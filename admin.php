@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 session_start();
 require_once "connection.php";
  if (isset($_SESSION['admin'])==false){
@@ -81,7 +78,7 @@ and open the template in the editor.
                             <a class="nav-link" href="process.html">process</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="work.html">work</a>
+                            <a class="nav-link" href="work.php">work</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="about.html">about</a>
@@ -128,8 +125,12 @@ and open the template in the editor.
             <h3>Create a project</h3>
             <form action="admin.php" method="POST"name="project" id="project" enctype="multipart/form-data">
                 <input type="text" name="project_name" placeholder="Project Name">
-                <textarea id="content-textarea" placeholder="Content here..." rows="4" cols="30" name="project_text"> </textarea>
-                <input type="text" name="project_category" placeholder="Project Category">
+                <textarea id="content-textarea" placeholder="Write project content here" rows="4" cols="30" name="project_text"></textarea>
+                <select name="project_category">
+                    <option value="exterior">EXTERIOR</option>
+                    <option value="interior">INTERIOR</option>
+                    <option value="multi-residental">MULTI-RESIDENTAL</option>
+                </select>
                 <input type="text" name="project_year" placeholder="Project Year">
                 <input type="file" name="project_image" accept="image/jpg,image/jpeg" /> 
                 <input type="file" name="my_file[]" multiple>
@@ -184,13 +185,14 @@ and open the template in the editor.
                                }
                               }
                      ?>
-                     <?php endif;?>
-                     <script>
+                      <script>
                         // refreshes page(better than header)
                         if ( window.history.replaceState ) {
                         window.history.replaceState( null, null, window.location.href );
                         }
                     </script>   
+                     <?php endif;?>
+                    
                     <?php else :?>
                             <p>Unesite ime projekta</p>
                     <?php endif; ?>            

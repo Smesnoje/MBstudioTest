@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 session_start();
 require_once "connection.php";
 
@@ -93,7 +90,7 @@ and open the template in the editor.
                             <a class="nav-link" href="process.html">process</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="work.html">work</a>
+                            <a class="nav-link" href="work.php">work</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="about.html">about</a>
@@ -113,8 +110,13 @@ and open the template in the editor.
             <h3>Edit <?php echo $project[0]->project_name; ?> </h3>
             <form action="edit.php?id=<?php echo $_GET['id']?>" method="POST"name="project" id="project" enctype="multipart/form-data">
                 <input type="text" name="project_name" placeholder="Project Name" value="<?php echo $project[0]->project_name; ?>">
-                <textarea id="content-textarea" placeholder="Content here..." rows="4" cols="30" name="project_text"><?php echo $project[0]->project_text; ?> </textarea>
-                <input type="text" name="project_category" value="<?php echo $project[0]->project_category; ?>"placeholder="Project Category">
+                <textarea id="content-textarea" placeholder="Write project content here" rows="4" cols="30" name="project_text"><?php echo $project[0]->project_text; ?> </textarea>
+                <select name="project_category">
+                    <option selected="selected"><?php echo $project[0]->project_category; ?></option>
+                    <option value="exterior">EXTERIOR</option>
+                    <option value="interior">INTERIOR</option>
+                    <option value="multi-residental">MULTI-RESIDENTAL</option>
+                </select>
                 <input type="text" name="project_year" value="<?php echo $project[0]->project_year; ?>"placeholder="Project Year">
                 <input type="file" name="project_image" accept="image/jpg,image/jpeg" /> 
                 <input type="submit" name="project" value="Save project">
@@ -123,12 +125,13 @@ and open the template in the editor.
                 <?php   $heading = $_POST['project_name'];?>
                 <?php if(strlen($heading)>0):?>
                     <?php  
-                    if($_FILES['project_image']['name']!=''){
-                            $image_path='img/'. $_FILES['project_image']['name'];
-                    }
-                    else{
-                        $image_path=$project[0]->project_image;
-                    }
+                    if(move_uploaded_file($_FILES['project_image']['tmp_name'], __DIR__.'/img/'.$_FILES['project_image']['name'])) { 
+                        //    echo "File uploaded successfully!"; 
+                           $image_path ='img/'. $_FILES['project_image']['name'];
+                      
+                          } else{ 
+                            $image_path ='';
+                          } 
                     $content = $_POST['project_text'];
                     $category = $_POST['project_category'];
                     $year = $_POST['project_year'];

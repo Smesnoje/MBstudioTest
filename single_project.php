@@ -4,6 +4,22 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<?php 
+session_start();
+require_once "connection.php";
+// project
+$select_projects ="SELECT * FROM projects WHERE project_id =  :project_id";
+$stmt = $konekcija->prepare($select_projects);
+$stmt->bindParam(':project_id', $_GET['id'], PDO::PARAM_INT);   
+$stmt->execute();
+$project = $stmt->fetchAll();
+// gallery
+$select_gallery ="SELECT * FROM gallery WHERE project_id =  :project_id";
+$stmt = $konekcija->prepare($select_gallery);
+$stmt->bindParam(':project_id', $_GET['id'], PDO::PARAM_INT);   
+$stmt->execute();
+$gallery = $stmt->fetchAll();
+?>
 <html lang="en">
     <head>
         <title>MBstudio</title>
@@ -62,7 +78,7 @@ and open the template in the editor.
                                 <a class="nav-link" href="process.html">process</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="work.html">work</a>
+                                <a class="nav-link active" href="work.php">work</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="about.html">about</a>
@@ -81,25 +97,16 @@ and open the template in the editor.
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-10">
                             <div class="single-work-gallery owl-carousel">
-                                <img src="img/oakland_hills_exterior/mbstudio-oakland-hills-img-1.jpg" alt=""/>
-                                <img src="img/oakland_hills_exterior/mbstudio-oakland-hills-img-2.jpg" alt=""/>
-                                <img src="img/oakland_hills_exterior/mbstudio-oakland-hills-img-3.jpg" alt=""/>
-                                <img src="img/oakland_hills_exterior/mbstudio-oakland-hills-img-4.jpg" alt=""/>
-                                <img src="img/oakland_hills_exterior/mbstudio-oakland-hills-img-5.jpg" alt=""/>
-                                <img src="img/oakland_hills_exterior/mbstudio-oakland-hills-img-6.jpg" alt=""/>
-                                <img src="img/oakland_hills_exterior/mbstudio-oakland-hills-img-7.jpg" alt=""/>
-                                <img src="img/oakland_hills_exterior/mbstudio-oakland-hills-img-8.jpg" alt=""/>
+                                <?php foreach ($gallery as $gallery_photo): ?>
+                                    <img src="<?php echo $gallery_photo->image_path;?>" alt=""/>
+                                <?php endforeach;?>
                             </div>
                         </div>
                         <div class="col-12 col-md-7">
                             <div class="single-work-item">
-                                <h3 class="text-uppercase">oakland hills</h3>
+                                <h3 class="text-uppercase"><?php echo $project[0]->project_name;?></h3>
                                 <p>
-                                    The 3D visualization for four luxury 4,500 S.F. single family homes with three car garages on the
-                                    Oakland hills in Oakland in 2014, created for a developer and a real estate company from San
-                                    Francisco. Design created by MB studio, with a modern design, modern materials, and up to date
-                                    technology in mind. MB Studio provided visualization of exterior and interior of the project; similar sets of
-                                    drawings for all four houses.
+                                   <?php echo $project[0]->project_text;?>
                                 </p>
                             </div>
                         </div>
@@ -107,17 +114,17 @@ and open the template in the editor.
                             <div class="single-work-info">
                                 <div class="category">
                                     <p>category</p>
-                                    <h6>exterior</h6>
+                                    <h6><?php echo $project[0]->project_category;?></h6>
                                 </div>
                                 <div class="year">
                                     <p>year of complition</p>
-                                    <h6>2014</h6>
+                                    <h6><?php echo $project[0]->project_year;?></h6>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="single-work-back">
-                                <a href="work.html">
+                                <a href="work.php">
                                         <svg id="Layer_1" class="back" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 24">
                                             <title>icon_back_to_list</title>
                                             <circle cx="2" cy="2" r="2"/><circle cx="12" cy="2" r="2"/><circle cx="22" cy="2" r="2"/><circle cx="32" cy="2" r="2"/><circle cx="2" cy="22" r="2"/><circle cx="12" cy="22" r="2"/><circle cx="22" cy="22" r="2"/><circle cx="32" cy="22" r="2"/><circle cx="2" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="22" cy="12" r="2"/><circle cx="32" cy="12" r="2"/>
