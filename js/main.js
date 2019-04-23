@@ -173,6 +173,7 @@ $(document).ready(function () {
                 $(this).hide();
             }
         });
+        $('.page-link').text(activePage);
 
     };
     function rightArrow(){
@@ -206,6 +207,7 @@ $(document).ready(function () {
         if(activePage==pages){
             $(".a-right").hide()
         }
+        $('.page-link').text(activePage);
     }
     $(".a-left").click(function (){
         leftArrow();
