@@ -9,6 +9,7 @@ require_once "connection.php";
     $list_projects = $konekcija->prepare($select_projects);
     $list_projects->execute();
     $projects = $list_projects->fetchAll();
+    $projects = array_reverse($projects);
 ?>
 
 <!--

@@ -6,6 +6,7 @@ $select_projects ="SELECT * FROM projects";
 $list_projects = $konekcija->prepare($select_projects);
 $list_projects->execute();
 $projects = $list_projects->fetchAll();
+$projects = array_reverse($projects);
 ?>
 <!--
 To change this license header, choose License Headers in Project Properties.

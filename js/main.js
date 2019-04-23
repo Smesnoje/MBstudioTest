@@ -1,4 +1,31 @@
 $(document).ready(function () {
+    $('.filter').addClass('filter-shown');
+    var numberOfProjects=0;
+    var pages=0;
+    var activePage=1;
+    $('.filter-shown').each(function(el){
+        if(1 <= el && el <= 8){
+            $(this).show();
+        }
+        else{
+            $(this).hide();
+
+        }
+    });
+    if(activePage==1){
+        $(".a-left").hide();
+    }
+    $('.filter-shown').each(function(el){
+        numberOfProjects++;
+         if (numberOfProjects<8){
+            $('.pagination').hide();
+         }else{
+            $('.pagination').show();
+         }
+    });
+
+    pages=numberOfProjects/8;
+    pages= Math.ceil(pages);
 
     // document.addEventListener('contextmenu', event => event.preventDefault());
 
@@ -81,20 +108,111 @@ $(document).ready(function () {
     TweenMax.from(".featured-slider-title", 1, { opacity: 0, x: 300 });
     TweenMax.from(".featured-slider-info", 1, { opacity: 0, x: -300 });
     //    TweenMax.staggerFrom(".services-item", 0.5, {opacity: 0, y: 200}, 0.2);
+   
 
-
-
+   
+    
     $(".filter-button").click(function () {
+        numberOfProjects=0;
+        activePage=1;
         var value = $(this).attr('data-filter');
         if (value == "all") {
             //$('.filter').removeClass('hidden');
             $('.filter').show('1000');
+            $('.filter').removeClass('filter-removed');
+            $('.filter').addClass('filter-shown');
+
         } else {
             //            $('.filter[filter-item="'+value+'"]').removeClass('hidden');
             //            $(".filter").not('.filter[filter-item="'+value+'"]').addClass('hidden');
             $(".filter").not('.' + value).hide('3000');
+            $(".filter").not('.' + value).addClass('filter-removed');
+            $(".filter").not('.' + value).removeClass('filter-shown');
+
             $('.filter').filter('.' + value).show('3000');
+            $('.filter').filter('.' + value).addClass('filter-shown');
+            $(".filter").filter('.' + value).removeClass('filter-removed');
         }
+       
+        $('.filter-shown').each(function(el){
+            numberOfProjects++;
+             if (numberOfProjects<8){
+                $('.pagination').hide();
+             }else{
+                $('.pagination').show();
+             }
+        });
+        pages=numberOfProjects/8;
+        pages= Math.ceil(pages);
+        
+        leftArrow();
+        if(activePage==1){
+            $(".a-left").hide()
+        }
+        if(activePage==pages){
+            $(".a-right").hide()
+        }
+    });
+    function leftArrow(){
+        $('.filter-shown').hide();
+        if(pages>1){
+            $(".a-right").show();
+        }
+        if(activePage!=1){
+            $(".a-left").show();
+            activePage--;
+            if(activePage==1){  $(".a-left").hide();}
+        }
+        
+        let toShowLast= activePage*8;
+        let toShowFirst= toShowLast-8;
+        $('.filter-shown').each(function(el){
+            if(toShowFirst <= el+1 && el+1 <= toShowLast){
+                $(this).show();
+            }else{
+                $(this).hide();
+            }
+        });
+
+    };
+    function rightArrow(){
+       
+        $('.filter-shown').hide();
+        if(activePage==pages){
+            $(".a-right").hide()
+        }
+        if(activePage!=pages){
+            if(activePage!=1){
+                $(".a-left").show();
+            }
+            activePage++;
+            if(activePage==pages){  $(".a-right").hide();}
+        }
+        else{
+            $(".a-right").hide();
+        }
+        let toShowLast= activePage*8;
+        let toShowFirst= toShowLast-8;
+        $('.filter-shown').each(function(el){
+            if(toShowFirst <= el && el <= toShowLast){
+                $(this).show();
+            }else{
+                $(this).hide();
+            }
+        });
+        if(activePage>1){
+            $(".a-left").show();
+        }
+        if(activePage==pages){
+            $(".a-right").hide()
+        }
+    }
+    $(".a-left").click(function (){
+        leftArrow();
+    });
+
+    $(".a-right").click(function () {
+        rightArrow();
     });
 
 
